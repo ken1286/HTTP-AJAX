@@ -1,8 +1,7 @@
 import React from 'react';
-import axios from 'axios';
 
-class FriendForm extends Component {
-  construcot(props) {
+class FriendForm extends React.Component {
+  constructor(props) {
     super(props);
     this.state = {
       friendInput: {
@@ -15,14 +14,22 @@ class FriendForm extends Component {
 
   handleChanges = event => {
     this.setState( {
-      ...this.state.friendInput,
+      friendInput: {
+        ...this.state.friendInput,
       [event.target.name]: event.target.value
+    }
     })
   }
 
-  postFriend = () => {
-    event.preventDefault();
-    props.postFriend(this.state.friendInput)
+  postFriend = (event) => {
+    this.props.postFriend(this.state.friendInput)
+    this.setState( {
+      friendInput: {
+        name: '',
+        age: '',
+        email: ''
+      }
+    })
   }
 
 
@@ -30,15 +37,29 @@ class FriendForm extends Component {
     return (
       <div>
         <form onSubmit={this.postFriend}>
-          <input>
+          <input
+            placeholder="name"
+            name="name"
+            type="text"
+            value={this.state.friendInput.name}
+            onChange={this.handleChanges}
+          />
           
-          </input>
-          <input>
-          
-          </input>
-          <input>
-          
-          </input>
+          <input 
+            placeholder="age"
+            name="age"
+            type="text"
+            value={this.state.friendInput.age}
+            onChange={this.handleChanges}
+          />
+          <input 
+            placeholder="email"
+            name="email"
+            type="text"
+            value={this.state.friendInput.email}
+            onChange={this.handleChanges}
+          />
+          <button type="submit" onClick={this.postFriend}>Submit</button>
         </form>
       </div>
       );

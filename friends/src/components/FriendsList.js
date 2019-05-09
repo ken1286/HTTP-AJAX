@@ -1,6 +1,7 @@
 import React from 'react';
 import axios from 'axios';
 import Friend from './Friend';
+import FriendForm from './FriendForm';
 
 class FriendsList extends React.Component {
   constructor() {
@@ -21,9 +22,17 @@ class FriendsList extends React.Component {
       })
   }
 
+  postFriend = friend => {
+    axios.post(`http://localhost:5000/friends`, friend)
+      .then(res => { console.log(res) })
+      .catch(err => { console.log(err)})
+  }
+
   render() { 
     return (
     <div>
+      <FriendForm postFriend={this.postFriend} />
+
       {this.state.friends.map( friend => {
         return (
           <Friend 
