@@ -22,6 +22,7 @@ class FriendForm extends React.Component {
   }
 
   postFriend = (event) => {
+    event.preventDefault();
     this.props.postFriend(this.state.friendInput)
     this.setState( {
       friendInput: {

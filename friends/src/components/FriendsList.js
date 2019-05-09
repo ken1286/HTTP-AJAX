@@ -2,51 +2,40 @@ import React from 'react';
 import axios from 'axios';
 import Friend from './Friend';
 import FriendForm from './FriendForm';
+import { Route } from 'react-router-dom';
 
 class FriendsList extends React.Component {
-  constructor() {
-    super();
-    this.state = {
-      friends: []
-    }
+  constructor(props) {
+    super(props);
   }
 
   componentDidMount() {
-    axios
-      .get('http://localhost:5000/friends')
-      .then(response => {
-        this.setState({ friends: response.data })
-      })
-      .catch(err => {
-        console.log(err);
-      })
+
   }
 
-  postFriend = friend => {
-    axios.post(`http://localhost:5000/friends`, friend)
-      .then(res => { console.log(res) })
-      .catch(err => { console.log(err)})
+  routeToFriend = (event, friend) => {
+    event.preventDefault();
+    this.props.history.push(`/friends/${friend.id}`)
   }
 
   render() { 
     return (
     <div>
-      <FriendForm postFriend={this.postFriend} />
+      <FriendForm postFriend={this.props.postFriend} />
 
-      {this.state.friends.map( friend => {
+      {this.props.friends.map( friend => {
         return (
-          <Friend 
-            name={friend.name}
-            age={friend.age}
-            email={friend.email}
-          /> 
+          <div onClick={(event) => this.routeToFriend(event, friend)} >
+            <h2>{friend.name}</h2>
+            <p>{friend.age}</p>
+            <p>{friend.email}</p>
+          </div>
         )
       })
-      
-      }
+    }
     </div>
 
-      );
+    );
   }
 }
  
