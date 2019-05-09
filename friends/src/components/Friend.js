@@ -1,6 +1,7 @@
 import React from 'react';
 import axios from 'axios';
 import { Route, NavLink } from 'react-router-dom';
+import UpdateForm from './UpdateForm';
 
 class Friend extends React.Component {
   constructor(props) {
@@ -29,7 +30,11 @@ class Friend extends React.Component {
   deleteFriend = event => {
     event.preventDefault();
     this.props.deleteFriend(this.state.friend.id)
-  } 
+  }
+
+  // updateFriend = (friendInput, friend) => {
+  //   this.props.updateFriend(friendInput, friend)
+  // }
 
   render() {
     
@@ -39,7 +44,7 @@ class Friend extends React.Component {
         <p>{this.state.friend.age}</p>
         <p>{this.state.friend.email}</p>
 
-      <button onClick={this.updateFriend}>Update Friend</button>
+      <UpdateForm updateFriend={this.props.updateFriend} activeFriend={this.state.friend} />
       <button onClick={this.deleteFriend}>Delete Friend</button>
       </div>
     )

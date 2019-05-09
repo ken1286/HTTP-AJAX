@@ -44,6 +44,17 @@ class App extends React.Component {
       .catch(err => console.log(err));
   }
 
+  updateFriend = (updatedFriend, friend) => {
+    axios
+      .put(`http://localhost:5000/friends/${friend.id}`, updatedFriend)
+      .then(res => {
+        this.setState({friends: res.data})
+        this.props.history.push('/')})
+      .catch(err => {
+        console.log(err)
+      })
+  }
+
   render() {
     return (
       <div className="App">
@@ -68,6 +79,7 @@ class App extends React.Component {
               {...props}
               friends={this.state.friends}
               deleteFriend={this.deleteFriend}
+              updateFriend={this.updateFriend}
             />)}
         />
       </div>

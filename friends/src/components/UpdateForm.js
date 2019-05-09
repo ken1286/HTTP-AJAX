@@ -1,6 +1,6 @@
 import React from 'react';
 
-class FriendForm extends React.Component {
+class UpdateForm extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
@@ -21,15 +21,15 @@ class FriendForm extends React.Component {
     })
   }
 
-  postFriend = (event) => {
+  updateFriend = (event) => {
     event.preventDefault();
-    this.props.postFriend(this.state.friendInput, this.props.activeFriend)
+    this.props.updateFriend(this.state.friendInput, this.props.activeFriend)
     this.setState( {
       friendInput: {
         name: '',
         age: '',
         email: ''
-      }
+      },
     })
   }
 
@@ -60,11 +60,11 @@ class FriendForm extends React.Component {
             value={this.state.friendInput.email}
             onChange={this.handleChanges}
           />
-          <button type="submit" onClick={this.postFriend}>Submit</button>
+          <button type="submit" onClick={this.updateFriend}>Submit</button>
         </form>
       </div>
       );
   }
 }
  
-export default FriendForm;
+export default UpdateForm;

@@ -1,8 +1,5 @@
 import React from 'react';
-import axios from 'axios';
-import Friend from './Friend';
 import FriendForm from './FriendForm';
-import { Route } from 'react-router-dom';
 
 class FriendsList extends React.Component {
   constructor(props) {
