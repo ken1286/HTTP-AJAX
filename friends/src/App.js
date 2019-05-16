@@ -1,61 +1,56 @@
 import React from 'react';
 import './App.css';
-import axios from 'axios';
 import FriendsList from './components/FriendsList';
 import { BrowserRouter as Router, Route, NavLink } from 'react-router-dom';
 import Friend from './components/Friend';
 
+import { getFriends, postFriend } from './actions';
+import { connect } from "react-redux";
+
 class App extends React.Component {
-  constructor() {
-    super();
-    this.state = {
-      friends: []
-    }
-  }
 
   componentDidMount() {
-    axios
-      .get('http://localhost:5000/friends')
-      .then(response => {
-        this.setState({ friends: response.data })
-      })
-      .catch(err => {
-        console.log(err);
-      })
+    this.props.getFriends();
   }
 
-  postFriend = friend => {
-    axios
-      .post(`http://localhost:5000/friends`, friend)
-      .then(response => { 
-        this.setState({ friends: response.data });
-        console.log(response);
-      })
-      .catch(err => {console.log(err)})
-  }
+  // postFriend = friend => {
+  //   axios
+  //     .post(`http://localhost:5000/friends`, friend)
+  //     .then(response => { 
+  //       this.setState({ friends: response.data });
+  //       console.log(response);
+  //     })
+  //     .catch(err => {console.log(err)})
+  // }
 
-  deleteFriend = id => {
-    axios
-      .delete(`http://localhost:5000/friends/${id}`)
-      .then(res => {
-        this.setState({ friends: res.data });
-        this.props.history.push('/');
-      })
-      .catch(err => console.log(err));
-  }
+  // deleteFriend = id => {
+  //   axios
+  //     .delete(`http://localhost:5000/friends/${id}`)
+  //     .then(res => {
+  //       this.setState({ friends: res.data });
+  //       this.props.history.push('/');
+  //     })
+  //     .catch(err => console.log(err));
+  // }
 
-  updateFriend = (updatedFriend, friend) => {
-    axios
-      .put(`http://localhost:5000/friends/${friend.id}`, updatedFriend)
-      .then(res => {
-        this.setState({friends: res.data})
-        this.props.history.push('/')})
-      .catch(err => {
-        console.log(err)
-      })
-  }
+  // updateFriend = (updatedFriend, friend) => {
+  //   axios
+  //     .put(`http://localhost:5000/friends/${friend.id}`, updatedFriend)
+  //     .then(res => {
+  //       this.setState({friends: res.data})
+  //       this.props.history.push('/')})
+  //     .catch(err => {
+  //       console.log(err)
+  //     })
+  // }
 
   render() {
+    if (this.props.isFetching) {
+      // return something here to indicate that you are fetching data
+      return (
+      <h2>LOADING...</h2>
+      )
+    }
     return (
       <div className="App">
         <h1>Friends</h1>
@@ -67,8 +62,8 @@ class App extends React.Component {
           render={props => (
             <FriendsList
               {...props}
-              friends={this.state.friends} 
-              postFriend={this.postFriend} />
+              friends={this.props.friends} 
+              postFriend={this.props.postFriend} />
           )}
         />
 
@@ -77,7 +72,7 @@ class App extends React.Component {
           render={props => (
             <Friend
               {...props}
-              friends={this.state.friends}
+              friends={this.props.friends}
               deleteFriend={this.deleteFriend}
               updateFriend={this.updateFriend}
             />)}
@@ -87,4 +82,15 @@ class App extends React.Component {
   }
 }
 
-export default App;
+const mapStateToProps = state => ({
+  friends: state.friends,
+  isFetching: state.isFetching
+});
+// our mapStateToProps needs to have two properties inherited from state
+// the characters and the fetching boolean
+export default connect(
+  mapStateToProps,
+  {
+    getFriends, postFriend
+  }
+)(App);
